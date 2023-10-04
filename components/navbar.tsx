@@ -6,13 +6,14 @@ import { Poppins } from 'next/font/google';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ModeToggle } from '@/components/mode-toggle';
+import MobileSidebar from '@/components/mobile-sidebar';
 
 const font = Poppins({ weight: '600', subsets: ['latin'] });
 
 export default function Navbar() {
   return (
-    <div className='fixed z-50 w-full flex justify-between items-center py-2 px-4 border-b border-primary/10 bg-secondary'>
-      <Menu className='block md:hidden' />
+    <div className='fixed z-50 w-full flex justify-between items-center py-2 px-4 border-b border-primary/10 bg-secondary h-16'>
+      <MobileSidebar />
       <Link href='/'>
         <h1 className={cn('hidden md:block text-xl md:text-2xl font-bold text-primary', font.className)}>companion.ai</h1>
       </Link>
