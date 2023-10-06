@@ -1,11 +1,14 @@
 'use client';
 
+import axios from 'axios';
 import * as z from 'zod';
 import { Wand2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Category, Companion } from '@prisma/client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
+import { useToast } from '@/components/ui/use-toast';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { ImageUpload } from '@/components/image-upload';
@@ -57,10 +60,30 @@ export default function CompanionForm({ initialData, categories }: CompanionForm
     },
   });
 
+  const router = useRouter();
+  const { toast } = useToast();
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      if (initialData) {
+        // update companion functionality
+        await axios.patch(`/api/companion/${initialData.id}`, values);
+      } else {
+        // create companion functionality
+        await axios.post('/api/companion', values);
+      }
+      toast({
+        description: 'Success!',
+      });
+      router.refresh();
+      router.push('/');
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        description: 'Something went wrong!',
+      });
+    }
   };
   return (
     <div className='h-full p-4 space-y-2 max-w-3xl mx-auto'>
@@ -161,7 +184,7 @@ export default function CompanionForm({ initialData, categories }: CompanionForm
             )}
           />
           <FormField
-            name='instructions'
+            name='seed'
             control={form.control}
             render={({ field }) => (
               <FormItem className='col-span-2 md:col-span-1'>
