@@ -1,9 +1,8 @@
 import Image from 'next/image';
-import { Companion } from '@prisma/client';
-
-import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 import Link from 'next/link';
-import { MessageSquare } from 'lucide-react';
+import { MessagesSquare } from 'lucide-react';
+import { Companion } from '@prisma/client';
+import { Card, CardFooter, CardHeader } from '@/components/ui/card';
 
 interface CompanionsProps {
   data: (Companion & { _count: { messages: number } })[];
@@ -34,7 +33,7 @@ export default function Companions({ data }: CompanionsProps) {
             <CardFooter className='flex items-center justify-between text-xs text-muted-foreground'>
               <p className='lowercase'>@{item.userName}</p>
               <div className='flex items-center'>
-                <MessageSquare className='aspect-square w-3 mr-1' />
+                <MessagesSquare className='aspect-square w-3 mr-1' />
                 {item._count.messages}
               </div>
             </CardFooter>
