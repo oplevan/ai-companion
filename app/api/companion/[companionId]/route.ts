@@ -29,6 +29,7 @@ export async function PATCH(req: Request, { params }: { params: { companionId: s
     const companion = await prismadb.companion.update({
       where: {
         id: params.companionId,
+        userId: user.id,
       },
       data: {
         categoryId,
