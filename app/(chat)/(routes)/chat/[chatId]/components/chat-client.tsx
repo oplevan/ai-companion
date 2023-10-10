@@ -4,7 +4,7 @@ import { useCompletion } from 'ai/react';
 import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Companion, Message } from '@prisma/client';
-import ChatHeader from './chat-header';
+import ChatHeader from '../../../../../../components/chat-header';
 import ChatForm from '@/components/chat-form';
 import { ChatMessages } from '@/components/chat-messages';
 import { ChatMessageProps } from '@/components/chat-message';

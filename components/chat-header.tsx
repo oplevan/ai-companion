@@ -6,7 +6,7 @@ import { ChevronLeft, Edit, MessagesSquare, MoreVertical, Trash } from 'lucide-r
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 
-import BotAvatar from '../../../../../../components/bot-avatar';
+import BotAvatar from './bot-avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';

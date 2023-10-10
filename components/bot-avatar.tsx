@@ -6,7 +6,7 @@ interface BotAvatarProps {
 }
 export default function BotAvatar({ src }: BotAvatarProps) {
   return (
-    <Avatar className='w-12 h-12'>
+    <Avatar className='w-12 h-12 border-2 border-primary/10'>
       <AvatarImage src={src} />
     </Avatar>
   );
