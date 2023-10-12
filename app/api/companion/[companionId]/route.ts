@@ -1,6 +1,8 @@
-import prismadb from '@/lib/prismadb';
 import { auth, currentUser } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
+
+import prismadb from '@/lib/prismadb';
+import { checkSubscription } from '@/lib/subscription';
 
 export async function PATCH(req: Request, { params }: { params: { companionId: string } }) {
   try {
@@ -9,7 +11,7 @@ export async function PATCH(req: Request, { params }: { params: { companionId: s
     const { src, name, description, instructions, seed, categoryId } = body;
 
     if (!params.companionId) {
-      return new NextResponse('Companion ID is required', { status: 400 });
+      return new NextResponse('Companion ID required', { status: 400 });
     }
 
     if (!user || !user.id || !user.firstName) {
@@ -20,11 +22,11 @@ export async function PATCH(req: Request, { params }: { params: { companionId: s
       return new NextResponse('Missing required fields', { status: 400 });
     }
 
-    // const isPro = await checkSubscription();
+    const userIsSubscribed = await checkSubscription();
 
-    // if (!isPro) {
-    //   return new NextResponse('Pro subscription required', { status: 403 });
-    // }
+    if (!userIsSubscribed) {
+      return new NextResponse('Pro subscription required', { status: 403 });
+    }
 
     const companion = await prismadb.companion.update({
       where: {
@@ -55,7 +57,7 @@ export async function DELETE(request: Request, { params }: { params: { companion
     const { userId } = auth();
 
     if (!userId) {
-      return new NextResponse('Unauthorized user', { status: 401 });
+      return new NextResponse('Unauthorized', { status: 401 });
     }
 
     const companion = await prismadb.companion.delete({
@@ -67,7 +69,7 @@ export async function DELETE(request: Request, { params }: { params: { companion
 
     return NextResponse.json(companion);
   } catch (error) {
-    console.log('[COMPANION_PATCH]', error);
+    console.log('[COMPANION_DELETE]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

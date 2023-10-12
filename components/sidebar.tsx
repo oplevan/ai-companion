@@ -3,12 +3,16 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Home, Plus, Settings } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useProModal } from '@/hooks/use-pro-modal';
 
-type Props = {};
+interface SidebarProps {
+  userIsSubscribed: boolean;
+}
 
-export default function Sidebar({}: Props) {
+export default function Sidebar({ userIsSubscribed }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const proModal = useProModal();
 
   const routes = [
     { icon: Home, href: '/', label: 'Home', pro: false },
@@ -17,6 +21,9 @@ export default function Sidebar({}: Props) {
   ];
 
   function onNavigate(url: string, pro: boolean) {
+    if (pro && !userIsSubscribed) {
+      return proModal.onOpen();
+    }
     return router.push(url);
   }
   return (
